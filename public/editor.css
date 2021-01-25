@@ -1,0 +1,22 @@
+#authors {
+	height: 2.3em;
+	max-width: 14em;
+}
+
+#picture {
+	max-width: 14em;
+}
+
+#preloader {
+  position: fixed;
+  top: 0;
+	bottom: 0;
+  left: 0;
+	right: 0;
+  width: 100%;
+  height: 100%;
+  background: url('preloader.gif') no-repeat center center rgba(0,0,0,0.2);
+  text-align: center;
+  border-radius: 10px;
+	z-index: 2000;
+}

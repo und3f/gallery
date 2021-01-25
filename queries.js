@@ -16,7 +16,7 @@ const getAuthors = (request, response) => {
 }
 
 const createAuthor = (request, response) => {
-	const { name } = request.body
+	const { name, birthday, deathday } = request.body
 
 	let code = 201
 	let message = {
@@ -24,7 +24,7 @@ const createAuthor = (request, response) => {
 		message: "Author added",
 	}
 
-	pool.query('INSERT INTO authors (name) VALUES ($1)', [name], (error, results) => {
+	pool.query('INSERT INTO authors (name, birthday, deathday) VALUES ($1, $2, $3)', [name, birthday, deathday], (error, results) => {
 		if (error) {
 			code = 500
 			message = {

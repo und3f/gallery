@@ -19,8 +19,8 @@ app.use(
 app.use(upload.array()); 
 
 app.use('/static', express.static(__dirname + '/public'))
-app.get('/', (request, response) => {
-	response.sendFile(path.join(__dirname + '/public/index.html'));
+app.get('/editor', (request, response) => {
+	response.sendFile(path.join(__dirname + '/public/editor.html'));
 })
 app.get('/authors', db.getAuthors)
 app.post('/authors', db.createAuthor)

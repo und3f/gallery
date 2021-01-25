@@ -10,11 +10,14 @@ function Editor() {
 		for (let paramI in data) {
 			let param = data[paramI]
 			if (param.name == 'created') {
-				param.value = param.value + "-01-01"
+				if (param.value == "") {
+					data.splice(paramI, 1)
+				} else {
+					param.value = param.value + "-01-01"
+				}
 			}
 		}
 
-		console.log($("#picture"))
 		let file = $("#picture")[0].files[0]
 		var fr = new FileReader();
 		fr.onload = function (e) {
@@ -39,7 +42,19 @@ function Editor() {
 	$("#createAuthorForm").submit(function (event) {
 		event.preventDefault()
 
-		data = $("#createAuthorForm").serialize()
+		data = $("#createAuthorForm").serializeArray()
+
+		for (let paramI in data) {
+			let param = data[paramI]
+			if (param.name == 'birthday' || param.name == 'deathday') {
+				if (param.value == "") {
+					data.splice(paramI, 1)
+				} else {
+					param.value = param.value + "-01-01"
+				}
+			}
+		}
+
 		$.post(
 			"/authors", data, (response) => {
 				editor.alert(response.message)
@@ -65,9 +80,6 @@ Editor.prototype.updateAuthors = function(selectedId) {
 	$.get(
 		"/authors", null, (data) => {
 			editor.authorsEl.empty()
-			if (selectedId == null) {
-				editor.authorsEl.append($(`<option disabled selected>Select an author</option>`))
-			}
 
 			data.forEach((author) => {
 				editor.authorsEl.append($(`<option value="${author.author_id}">${author.name}</option>`))
@@ -88,6 +100,19 @@ Editor.prototype.alert = function(message, error) {
 }
 
 $(document).ready(() => {
+	// var preloader = $('<div>', { 'class': 'preloader' }).appendTo('body');
+	let preloader = $("#preloader")
+	var doc = $(document);
+
+	doc.ajaxStart(function(){
+		preloader.fadeIn();
+	});
+
+	doc.ajaxComplete(function(){
+		// Keep it visible for 0.8 seconds after the request completes
+		preloader.delay(0).fadeOut();
+	});
+
 	let editor = new Editor()
 	editor.updateAuthors()
 })
