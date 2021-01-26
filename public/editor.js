@@ -102,13 +102,11 @@ Editor.prototype.alert = function(message, error) {
 $(document).ready(() => {
 	// var preloader = $('<div>', { 'class': 'preloader' }).appendTo('body');
 	let preloader = $("#preloader")
-	var doc = $(document);
 
-	doc.ajaxStart(function(){
+	$(document).ajaxStart(function(){
 		preloader.fadeIn();
-	});
-
-	doc.ajaxComplete(function(){
+	})
+		.ajaxComplete(function(){
 		// Keep it visible for 0.8 seconds after the request completes
 		preloader.delay(0).fadeOut();
 	});
